@@ -104,10 +104,12 @@ const StyledDropdownItemInput = styled(Input)`
 	margin-left: 0;
 	font-weight: normal;
 	font-size: 12px;
+	color: ${(props: StyledDropdownItemInputProps) =>
+		props.error ? 'red' : `${colors.black.toString()}`};
 
 	::placeholder {
 		color: ${(props: StyledDropdownItemInputProps) =>
-			props.error ? 'red' : `${colors.grey60.toString()}`};
+			props.error ? 'red' : `${colors.black.toString()}`};
 	}
 	:hover {
 		::placeholder {

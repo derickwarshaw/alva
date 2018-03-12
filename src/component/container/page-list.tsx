@@ -29,11 +29,11 @@ export class PageListItem extends React.Component<PageListItemProps> {
 	public constructor(props: PageListItemProps) {
 		super(props);
 
-		this.handleInputChange = this.handleInputChange.bind(this);
 		this.handleBlur = this.handleBlur.bind(this);
-		this.handlePageKeyDown = this.handlePageKeyDown.bind(this);
+		this.handleInputChange = this.handleInputChange.bind(this);
 		this.handlePageClick = this.handlePageClick.bind(this);
 		this.handlePageDoubleClick = this.handlePageDoubleClick.bind(this);
+		this.handlePageKeyDown = this.handlePageKeyDown.bind(this);
 		this.renamePage = this.renamePage.bind(this);
 	}
 	public render(): JSX.Element {
@@ -71,6 +71,10 @@ export class PageListItem extends React.Component<PageListItemProps> {
 
 	@MobX.action
 	protected handlePageKeyDown(e: React.KeyboardEvent<HTMLInputElement>): void {
+		const pageOfSameName = this.props.projectPages.find(
+			(page: PageRef) => page.getName() === this.pageNameInputValue
+		);
+
 		switch (e.key.toString()) {
 			case 'Escape':
 				this.pageNameInputValue = this.props.name;
@@ -83,15 +87,11 @@ export class PageListItem extends React.Component<PageListItemProps> {
 					this.pageElementEditable = false;
 					return;
 				}
-
-				const pageOfSameName = this.props.projectPages.find(
-					(page: PageRef) => page.getName() === this.pageNameInputValue
-				);
-
 				if (!pageOfSameName) {
 					this.renamePage(this.pageNameInputValue);
 					this.pageElementEditable = false;
 					this.pageNameError = false;
+					console.log(this.pageNameError);
 				} else {
 					this.pageNameError = true;
 					console.log(this.pageNameError);
