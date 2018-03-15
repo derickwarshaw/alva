@@ -7,6 +7,7 @@ import { observer } from 'mobx-react';
 import { ObjectProperty } from '../../store/styleguide/property/object-property';
 import { PageElement } from '../../store/page/page-element';
 import { PropertyValue } from '../../store/page/property-value';
+import { PropertyValueCommand } from '../../store/page/command/property-value-command';
 import * as React from 'react';
 import { Store } from '../../store/store';
 import { StringItem } from '../../lsg/patterns/property-items/string-item';
@@ -19,6 +20,7 @@ interface ObjectContext {
 interface PropertyTreeProps {
 	context?: ObjectContext;
 	element: PageElement;
+	store: Store;
 }
 
 @observer
@@ -118,7 +120,14 @@ class PropertyTree extends React.Component<PropertyTreeProps> {
 								property: objectProperty
 							};
 
-							return <PropertyTree key={id} context={newContext} element={element} />;
+							return (
+								<PropertyTree
+									key={id}
+									context={newContext}
+									element={element}
+									store={this.props.store}
+								/>
+							);
 
 						default:
 							return <div key={id}>Unknown type: {type}</div>;
@@ -130,26 +139,17 @@ class PropertyTree extends React.Component<PropertyTreeProps> {
 
 	// tslint:disable-next-line:no-any
 	protected handleChange(id: string, value: any, context?: ObjectContext): void {
-		if (context) {
-			const parts = `${context.path}.${id}`.split('.');
-			const [rootId, ...path] = parts;
-
-			this.props.element.setPropertyValue(rootId, value, path.join('.'));
-			return;
-		}
-
-		this.props.element.setPropertyValue(id, value);
+		const fullPath: string = context ? `${context.path}.${id}` : id;
+		const [rootId, ...propertyPath] = fullPath.split('.');
+		this.props.store.execute(
+			new PropertyValueCommand(this.props.element, rootId, value, propertyPath.join('.'))
+		);
 	}
 
 	protected getValue(id: string, path?: string): PropertyValue {
-		if (path) {
-			const parts = `${path}.${id}`.split('.');
-			const [rootId, ...propertyPath] = parts;
-
-			return this.props.element.getPropertyValue(rootId, propertyPath.join('.'));
-		}
-
-		return this.props.element.getPropertyValue(id);
+		const fullPath = path ? `${path}.${id}` : id;
+		const [rootId, ...propertyPath] = fullPath.split('.');
+		return this.props.element.getPropertyValue(rootId, propertyPath.join('.'));
 	}
 
 	@action
@@ -182,6 +182,6 @@ export class PropertyList extends React.Component<PropertyListProps> {
 			return <div>No Element selected</div>;
 		}
 
-		return <PropertyTree element={selectedElement} />;
+		return <PropertyTree element={selectedElement} store={this.props.store} />;
 	}
 }

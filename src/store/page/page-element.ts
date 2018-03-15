@@ -74,11 +74,6 @@ export class PageElement {
 		if (properties.setDefaults && this.pattern) {
 			this.pattern.getProperties().forEach(property => {
 				this.setPropertyValue(property.getId(), property.getDefaultValue());
-				console.log(
-					`Property ${property.getId()}: Set default ${JSON.stringify(
-						this.getPropertyValue(property.getId())
-					)}`
-				);
 			});
 		}
 
@@ -150,18 +145,6 @@ export class PageElement {
 	}
 
 	/**
-	 * Adds a page element as another child of this element's parent, directly after this element.
-	 * Also removes the element from any previous parent.
-	 * @param child The child element to add.
-	 */
-	public addSibling(child: PageElement): void {
-		const parentElement: PageElement | undefined = this.getParent();
-		if (parentElement) {
-			child.setParent(parentElement, this.getIndex() + 1);
-		}
-	}
-
-	/**
 	 * Returns a deep clone of this page element (i.e. cloning all values and children as well).
 	 * The new clone does not have any parent.
 	 * @return The new clone.
@@ -223,6 +206,14 @@ export class PageElement {
 	}
 
 	/**
+	 * Returns the technical (internal) ID of the page.
+	 * @return The technical (internal) ID of the page.
+	 */
+	public getId(): string {
+		return this.id;
+	}
+
+	/**
 	 * Returns the 0-based position of this element within its parent.
 	 * @return The 0-based position of this element.
 	 */
@@ -231,14 +222,6 @@ export class PageElement {
 			throw new Error('This element has no parent');
 		}
 		return this.parent.children.indexOf(this);
-	}
-
-	/**
-	 * Returns the technical (internal) ID of the page.
-	 * @return The technical (internal) ID of the page.
-	 */
-	public getId(): string {
-		return this.id;
 	}
 
 	/**
