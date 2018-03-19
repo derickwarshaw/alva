@@ -33,11 +33,13 @@ const StyledPreviewTile = styled.div`
 	box-shadow: 0 3px 12px ${colors.blackAlpha13.toString()};
 	margin-top: ${getSpace(Size.S)}px;
 	background-color: ${colors.white.toString()};
+	cursor: pointer;
 `;
 
 const StyledTitle = styled.strong`
 	font-size: 12px;
 	font-weight: normal;
+	cursor: pointer;
 `;
 
 const StyledEditableTitle = styled(Input)`
