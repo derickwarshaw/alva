@@ -95,21 +95,14 @@ export class PageListItem extends React.Component<PageListItemProps> {
 	}
 
 	protected renamePage(name: string): void {
-		const currentPage = this.props.store.getCurrentPage();
-
-		this.props.pageRef.setName(name);
-		this.props.pageRef.setId(Store.convertToId(name));
-
-		if (currentPage) {
-			currentPage.setName(name);
-			this.props.store.renamePage(Store.convertToId(name));
-			currentPage.setId(Store.convertToId(name));
-		}
+		const pageRef = this.props.pageRef;
+		pageRef.setName(name);
+		pageRef.updatePathFromNames();
 	}
 }
 
 @observer
-export class PageListOld extends React.Component<PageListProps> {
+export class PageList extends React.Component<PageListProps> {
 	@MobX.observable protected pageListVisible: boolean = false;
 	public constructor(props: PageListProps) {
 		super(props);
@@ -131,7 +124,7 @@ export class PageListOld extends React.Component<PageListProps> {
 			>
 				{this.getProjectPages().map((page: PageRef, index) => (
 					<PageListItem
-						key={index}
+						key={page.getId()}
 						name={page.getName()}
 						pageID={page.getId()}
 						pageRef={page}

@@ -3,7 +3,6 @@ import * as React from 'react';
 import Layout from '../../lsg/patterns/layout';
 import PreviewTile from '../../lsg/patterns/preview-tile';
 import Space, { Size } from '../../lsg/patterns/space';
-
 import { PageRef } from '../../store/project/page-ref';
 
 export interface PageListProps {
@@ -17,7 +16,12 @@ const PageList: React.StatelessComponent<PageListProps> = (props): JSX.Element =
 			{props.pages.map((page: PageRef, i: number) => {
 				return (
 					<Space key={i} size={Size.S}>
-						<PreviewTile name={page.getName()} />
+						<PreviewTile
+							editable={false}
+							focused={false}
+							name={page.getName()}
+							value={'placeholder'}
+						/>
 					</Space>
 				);
 			})}

@@ -6,7 +6,12 @@ import { Headline } from '../headline';
 import PreviewTile from './index';
 import Space, { Size } from '../space';
 
+const handleChange = (e: React.ChangeEvent<HTMLInputElement>): string => {
+	return e.target.value;
+};
+
 const currentDate = new Date();
+
 const DemoPreviewTile: React.StatelessComponent<{}> = (): JSX.Element => (
 	<Space size={[Size.L, Size.XXXL]}>
 		<Space size={[0, 0, Size.S, 0]}>
@@ -17,19 +22,49 @@ const DemoPreviewTile: React.StatelessComponent<{}> = (): JSX.Element => (
 		</Space>
 		<Layout>
 			<Space size={Size.S}>
-				<PreviewTile name="Page Name" />
+				<PreviewTile
+					editable={false}
+					focused={false}
+					handleChange={handleChange}
+					name="Page Name"
+					value="Editable"
+				/>
 			</Space>
 			<Space size={Size.S}>
-				<PreviewTile name="Page Name" />
+				<PreviewTile
+					editable={false}
+					focused={true}
+					handleChange={handleChange}
+					name="Focused Page"
+					value="Page Name"
+				/>
 			</Space>
 			<Space size={Size.S}>
-				<PreviewTile name="Page Name" />
+				<PreviewTile
+					editable={true}
+					focused={true}
+					handleChange={handleChange}
+					name="Focused and Editable"
+					value="Editable Page Name"
+				/>
 			</Space>
 			<Space size={Size.S}>
-				<PreviewTile name="Page Name" />
+				<PreviewTile
+					editable={false}
+					focused={false}
+					handleChange={handleChange}
+					name="Page Name"
+					value="Editable Page Name"
+				/>
 			</Space>
 			<Space size={Size.S}>
-				<PreviewTile name="Page Name" />
+				<PreviewTile
+					editable={false}
+					focused={false}
+					handleChange={handleChange}
+					name="Page Name"
+					value="Editable Page Name"
+				/>
 			</Space>
 		</Layout>
 	</Space>

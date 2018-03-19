@@ -16,7 +16,7 @@ import { createMenu } from '../electron/menu';
 import * as MobX from 'mobx';
 import { observer } from 'mobx-react';
 import { Page } from '../store/page/page';
-import { PageListOld } from './container/page-list-dropdown_old';
+import { PageList as PageListOld } from './container/page-list-dropdown_old';
 import * as PathUtils from 'path';
 import { PatternListContainer } from './container/pattern-list';
 import PatternsPane from '../lsg/patterns/panes/patterns-pane';
