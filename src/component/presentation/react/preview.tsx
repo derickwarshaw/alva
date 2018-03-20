@@ -1,15 +1,15 @@
+import { ErrorMessage } from '../../../lsg/patterns/error-message';
 import { action, observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { Page } from '../../../store/page/page';
 import { PageElement } from '../../../store/page/page-element';
 import { Pattern } from '../../../store/styleguide/pattern';
+import { HighlightAreaProps, HighlightElementFunction } from '../../preview';
 import { PropertyValue } from '../../../store/page/property-value';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Store } from '../../../store/store';
 import { StringProperty } from '../../../store/styleguide/property/string-property';
-
-import { HighlightAreaProps, HighlightElementFunction } from '../../preview';
 
 export interface PreviewAppProps {
 	store: Store;
@@ -139,7 +139,6 @@ class Preview extends React.Component<PreviewProps> {
 			// First, process the properties and children of the declaration recursively
 			const pageElement: PageElement = value;
 			const pattern = pageElement.getPattern();
-
 			if (!pattern) {
 				return null;
 			}
@@ -164,32 +163,36 @@ class Preview extends React.Component<PreviewProps> {
 				.getChildren()
 				.map((child, index) => this.createComponent(child, String(index)));
 
-			// Then, load the pattern factory
-			const patternPath: string = pattern.getImplementationPath();
-			let patternFactory: React.StatelessComponent | ObjectConstructor = this.patternFactories[
-				patternId
-			];
-			if (patternFactory == null) {
-				const exportName = pattern.getExportName();
-				const module = require(patternPath);
-				patternFactory = module[exportName];
-				this.patternFactories[patternId] = patternFactory;
-			}
+			try {
+				// Then, load the pattern factory
+				const patternPath: string = pattern.getImplementationPath();
+				let patternFactory: React.StatelessComponent | ObjectConstructor = this
+					.patternFactories[patternId];
+				if (patternFactory == null) {
+					const exportName = pattern.getExportName();
+					const module = require(patternPath);
+					patternFactory = module[exportName];
+					this.patternFactories[patternId] = patternFactory;
+				}
 
-			const reactComponent = React.createElement(patternFactory, componentProps);
+				const reactComponent = React.createElement(patternFactory, componentProps);
 
-			// Finally, build the component
-			if (pageElement.getId() === this.props.selectedElementId) {
+				// Finally, build the component
 				return (
 					<PatternWrapper
 						key={key}
-						ref={(ref: PatternWrapper) => (this.patternWrapperRef = ref)}
+						ref={
+							pageElement.getId() === this.props.selectedElementId
+								? (ref: PatternWrapper) => (this.patternWrapperRef = ref)
+								: undefined
+						}
 					>
 						{reactComponent}
 					</PatternWrapper>
 				);
+			} catch (error) {
+				return <ErrorMessage patternName={pattern.getName()} error={error} />;
 			}
-			return <PatternWrapper key={key}>{reactComponent}</PatternWrapper>;
 		} else {
 			// The model is an object, but not a pattern declaration.
 			// Create a new object with recursively processed values.

@@ -1,0 +1,9 @@
+{
+	"name": "error-message",
+	"displayName": "Error Message",
+	"flag": "alpha",
+	"version": "1.0.0",
+	"tags": [
+		"error-message"
+	]
+}
