@@ -7,8 +7,10 @@ import { getSpace, Size } from '../space';
 
 export interface PreviewTileProps {
 	editable: boolean;
+	id?: string;
 	focused: boolean;
 	handleChange?: React.ChangeEventHandler<HTMLInputElement>;
+	handleClick?: React.MouseEventHandler<HTMLElement>;
 	name: string;
 	value: string;
 }
@@ -57,9 +59,10 @@ const StyledEditableTitle = styled(Input)`
 `;
 
 const PreviewTile: React.StatelessComponent<PreviewTileProps> = (props): JSX.Element => (
-	<StyledPreview>
+	<StyledPreview data-id={props.id}>
 		{props.editable ? (
 			<StyledEditableTitle
+				data-title-id={props.id}
 				focused={props.focused}
 				handleChange={props.handleChange}
 				type={InputTypes.string}
@@ -68,9 +71,9 @@ const PreviewTile: React.StatelessComponent<PreviewTileProps> = (props): JSX.Ele
 				{props.name}
 			</StyledEditableTitle>
 		) : (
-			<StyledTitle>{props.name}</StyledTitle>
+			<StyledTitle data-title-id={props.id}>{props.name}</StyledTitle>
 		)}
-		<StyledPreviewTile focused={props.focused} />
+		<StyledPreviewTile data-id={props.id} focused={props.focused} />
 	</StyledPreview>
 );
 

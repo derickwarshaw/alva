@@ -6,19 +6,29 @@ import Space, { Size } from '../../lsg/patterns/space';
 import { PageRef } from '../../store/project/page-ref';
 
 export interface PageListProps {
+	activeId: string;
+	editable: boolean;
+	focused: boolean;
+	handleFocus: any;
+	onClick?: React.MouseEventHandler<HTMLElement>;
 	pages: PageRef[];
 }
 
 const PageList: React.StatelessComponent<PageListProps> = (props): JSX.Element => {
-	console.log(props.pages, 'this are the pages');
 	return (
 		<Layout>
 			{props.pages.map((page: PageRef, i: number) => {
+				console.log(props, 'this are props');
+				let focused = false;
+				if (page.getId() === props.activeId) {
+					focused = props.handleFocus();
+				}
 				return (
 					<Space key={i} size={Size.S}>
 						<PreviewTile
+							id={page.getId()}
 							editable={false}
-							focused={false}
+							focused={focused}
 							name={page.getName()}
 							value={'placeholder'}
 						/>
