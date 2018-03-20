@@ -3,16 +3,14 @@ import * as React from 'react';
 import Copy from '../copy';
 import Layout from '../layout';
 import { Headline } from '../headline';
-import PreviewTile from './index';
+import { PreviewTile } from './index';
 import Space, { Size } from '../space';
 
-const handleChange = (e: React.ChangeEvent<HTMLInputElement>): string => {
-	return e.target.value;
-};
+const handleChange = (e: React.ChangeEvent<HTMLInputElement>): string => e.target.value;
 
 const currentDate = new Date();
 
-const DemoPreviewTile: React.StatelessComponent<{}> = (): JSX.Element => (
+export const DemoPreviewTile = (): JSX.Element => (
 	<Space size={[Size.L, Size.XXXL]}>
 		<Space size={[0, 0, Size.S, 0]}>
 			<Headline order={2}>Project Name</Headline>
@@ -69,5 +67,3 @@ const DemoPreviewTile: React.StatelessComponent<{}> = (): JSX.Element => (
 		</Layout>
 	</Space>
 );
-
-export default DemoPreviewTile;

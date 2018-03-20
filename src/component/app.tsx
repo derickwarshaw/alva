@@ -32,7 +32,7 @@ import Space, { Size as SpaceSize } from '../lsg/patterns/space';
 import SplashScreen from '../lsg/patterns/splash-screen';
 import { Store } from '../store/store';
 
-import PageListContainer from './container/page-list-container';
+import { PageListContainer } from './container/page-list-container';
 
 // prevent app zooming
 webFrame.setVisualZoomLevelLimits(1, 1);
