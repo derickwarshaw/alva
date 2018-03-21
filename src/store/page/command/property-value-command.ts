@@ -44,7 +44,8 @@ export class PropertyValueCommand extends PageCommand {
 		const previousPropertyCommand: PropertyValueCommand = previousCommand as PropertyValueCommand;
 		if (
 			previousPropertyCommand.element.getId() !== this.element.getId() ||
-			previousPropertyCommand.propertyId !== this.propertyId
+			previousPropertyCommand.propertyId !== this.propertyId ||
+			previousPropertyCommand.path !== this.path
 		) {
 			return false;
 		}
